@@ -18,7 +18,6 @@ const addUserToRoom = async (currentUser: string, userWhoCreatedRoom: string, ws
 
   if (availableRooms.get(userWhoCreatedRoom)?.roomUsers.length === 2) {
     availableRooms.delete(userWhoCreatedRoom);
-    // extra logic to create game
     await handleCreateGame(currentUser, userWhoCreatedRoom);
   }
 

@@ -4,11 +4,11 @@ import { MessageTypes } from './utils/types';
 import handleCreateUser from './modules/handleCreateUser';
 import broadcast from './utils/broadcast';
 import handleCreateRoom from './modules/handleCreateRoom';
-import updateRoom from './modules/updateRoom';
-import { availableRooms, loggedUsersMap } from './db';
+import { availableRooms, currentGames } from './db';
 import addUserToRoom from './modules/addUserToRoom';
 import responseRooms from './utils/roomsHelper';
 import handleAddShips from './modules/handleAddShips';
+import handleAttack from './modules/handleAttack';
 
 const port = 3000;
 
@@ -35,7 +35,8 @@ server.on('connection', (ws) => {
         await handleAddShips(msg);
         break;
       case MessageTypes.attack:
-        console.log(msg);
+        currentUser === currentGames.get(msg.data.gameId)?.indexPlayerTurn &&
+          (await handleAttack(msg, ws));
         break;
       case MessageTypes.randomAttack:
         console.log(msg);

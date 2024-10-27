@@ -24,6 +24,7 @@ const handleCreateGame = async (currentUser: string, userWhoCreatedRoom: string)
     shipsPlayer2: [],
     indexPlayerWhoCreated: userWhoCreatedRoom,
     indexPlayer2: currentUser,
+    indexPlayerTurn: userWhoCreatedRoom,
   });
 
   loggedUsersMap.get(userWhoCreatedRoom)?.ws.send(messageStringify(user1Game));

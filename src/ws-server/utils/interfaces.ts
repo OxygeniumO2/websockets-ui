@@ -1,4 +1,4 @@
-import { MessageTypes, ShipTypes } from './types';
+import { MessageTypes, ShipTypes, Statuses } from './types';
 
 export interface RequestReg {
   type: MessageTypes.reg;
@@ -74,4 +74,29 @@ export interface GameDB {
   shipsPlayer2: Ship[];
   indexPlayerWhoCreated: string;
   indexPlayer2: string;
+  indexPlayerTurn: string;
+}
+
+export interface Attack {
+  type: MessageTypes.attack;
+  data: {
+    gameId: string;
+    x: number;
+    y: number;
+    indexPlayer: string /* id of the player in the current game session */;
+  };
+  id: 0;
+}
+
+export interface AttackFeedback {
+  type: MessageTypes.attack;
+  data: {
+    position: {
+      x: number;
+      y: number;
+    };
+    currentPlayer: number | string /* id of the player in the current game session */;
+    status: Statuses.miss | Statuses.killed | Statuses.shot;
+  };
+  id: 0;
 }

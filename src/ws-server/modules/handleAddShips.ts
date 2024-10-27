@@ -1,13 +1,14 @@
 import { currentGames, loggedUsersMap } from '../db';
 import { AddShips } from '../utils/interfaces';
 import startGame from './startGame';
+import sendTurn from './sendTurn';
 
 const handleAddShips = async (request: AddShips) => {
   const { gameId, ships, indexPlayer } = request.data;
 
   if (!currentGames.has(gameId)) return;
 
-  if (currentGames.get(gameId)?.indexPlayerWhoCreated === indexPlayer) {
+  if (indexPlayer === currentGames.get(gameId)?.indexPlayerWhoCreated) {
     currentGames.get(gameId)?.shipsPlayerWhoCreated?.push(...ships);
   } else {
     currentGames.get(gameId)?.shipsPlayer2?.push(...ships);
@@ -21,6 +22,8 @@ const handleAddShips = async (request: AddShips) => {
     const player2 = currentGames.get(gameId)!.indexPlayer2;
 
     await startGame(playerWhoCreated, player2);
+
+    await sendTurn(playerWhoCreated, player2, gameId);
   }
 };
 
