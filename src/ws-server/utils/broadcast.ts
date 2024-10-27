@@ -1,7 +1,10 @@
+import ws from 'ws';
 import { loggedUsersMap } from '../db';
 
-const broadcast = (data: string) => {
-  loggedUsersMap.forEach((client) => client.send(data));
+const broadcast = async (data: string) => {
+  loggedUsersMap.forEach(
+    (client) => client.logged && client.ws.readyState === ws.OPEN && client.ws.send(data)
+  );
 };
 
 export default broadcast;

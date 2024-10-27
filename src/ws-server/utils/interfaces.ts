@@ -19,3 +19,11 @@ export interface ResponseReg {
   };
   id: 0;
 }
+
+export interface Room {
+  roomId: number | string;
+  roomUsers: {
+    name: string;
+    index: number | string;
+  }[];
+}
