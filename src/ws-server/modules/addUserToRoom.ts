@@ -3,26 +3,28 @@ import ws from 'ws';
 import { messageStringify } from '../utils/messagesHelpers';
 import { availableRooms } from '../db';
 import broadcast from '../utils/broadcast';
+import responseRooms from '../utils/roomsHelper';
+import handleCreateGame from './handleCreateGame';
 
-const addUserToRoom = async (index: string, user: string, ws: ws) => {
-  if (index === user) return;
+const addUserToRoom = async (currentUser: string, userWhoCreatedRoom: string, ws: ws) => {
+  if (currentUser === userWhoCreatedRoom) return;
 
-  if (availableRooms.has(index) && availableRooms.get(index)!.roomUsers.length < 2) {
-    availableRooms.get(index)?.roomUsers.push({ name: user, index: 2 });
+  if (
+    availableRooms.has(userWhoCreatedRoom) &&
+    availableRooms.get(userWhoCreatedRoom)!.roomUsers.length < 2
+  ) {
+    availableRooms.get(userWhoCreatedRoom)?.roomUsers.push({ name: currentUser, index: 2 });
   }
 
-  if (availableRooms.get(index)?.roomUsers.length === 2) {
-    availableRooms.delete(index);
+  if (availableRooms.get(userWhoCreatedRoom)?.roomUsers.length === 2) {
+    availableRooms.delete(userWhoCreatedRoom);
     // extra logic to create game
+    await handleCreateGame(currentUser, userWhoCreatedRoom);
   }
 
-  const updateRooms = {
-    type: MessageTypes.updateRoom,
-    data: Array.from(availableRooms.values()),
-    id: 0,
-  };
+  const response = responseRooms();
 
-  await broadcast(messageStringify(updateRooms));
+  await broadcast(response);
 };
 
 export default addUserToRoom;

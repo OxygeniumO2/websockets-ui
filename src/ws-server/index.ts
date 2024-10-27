@@ -5,8 +5,9 @@ import handleCreateUser from './modules/handleCreateUser';
 import broadcast from './utils/broadcast';
 import handleCreateRoom from './modules/handleCreateRoom';
 import updateRoom from './modules/updateRoom';
-import { loggedUsersMap } from './db';
+import { availableRooms, loggedUsersMap } from './db';
 import addUserToRoom from './modules/addUserToRoom';
+import responseRooms from './utils/roomsHelper';
 
 const port = 3000;
 
@@ -29,7 +30,7 @@ server.on('connection', (ws) => {
         await handleCreateRoom(currentUser, ws);
         break;
       case MessageTypes.addUserToRoom:
-        await addUserToRoom(msg.data.indexRoom, currentUser, ws);
+        await addUserToRoom(currentUser, msg.data.indexRoom, ws);
         console.log(msg);
         break;
       case MessageTypes.addShips:
@@ -44,6 +45,18 @@ server.on('connection', (ws) => {
       default:
         console.log('Unknown message type');
     }
+  });
+
+  ws.on('close', () => {
+    if (!availableRooms.has(currentUser)) return;
+
+    availableRooms.delete(currentUser);
+
+    const responseRoomsMsg = responseRooms();
+
+    broadcast(responseRoomsMsg);
+
+    console.log(`User ${currentUser} disconnected from logged-in users.`);
   });
 
   console.log('New connection was created');

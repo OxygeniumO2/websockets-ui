@@ -1,10 +1,7 @@
 import { availableRooms } from '../db';
 import ws from 'ws';
-import updateRoom from './updateRoom';
 import broadcast from '../utils/broadcast';
-import { MessageTypes } from '../utils/types';
-import { messageStringify } from '../utils/messagesHelpers';
-import addUserToRoom from './addUserToRoom';
+import responseRooms from '../utils/roomsHelper';
 
 const handleCreateRoom = async (user: string, ws: ws) => {
   if (availableRooms.has(user)) return;
@@ -19,13 +16,9 @@ const handleCreateRoom = async (user: string, ws: ws) => {
     ],
   });
 
-  const updateRooms = {
-    type: MessageTypes.updateRoom,
-    data: Array.from(availableRooms.values()),
-    id: 0,
-  };
+  const response = responseRooms();
 
-  await broadcast(messageStringify(updateRooms));
+  await broadcast(response);
 };
 
 export default handleCreateRoom;

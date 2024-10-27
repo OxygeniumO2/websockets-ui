@@ -4,6 +4,8 @@ import { availableRooms, loggedUsersMap } from '../db';
 import { MessageTypes } from '../utils/types';
 import { messageStringify } from '../utils/messagesHelpers';
 import updateRoom from './updateRoom';
+import responseRooms from '../utils/roomsHelper';
+import broadcast from '../utils/broadcast';
 
 const createResponseReg = (name: string, error: boolean, errorText: string = ''): ResponseReg => {
   return {
@@ -55,6 +57,7 @@ const handleCreateUser = async (msg: RequestReg, ws: ws) => {
 
   ws.on('close', () => {
     loggedUsersMap.set(msg.data.name, { password: msg.data.password, ws, logged: false });
+
     console.log(`User ${msg.data.name} disconnected from logged-in users.`);
   });
 };
