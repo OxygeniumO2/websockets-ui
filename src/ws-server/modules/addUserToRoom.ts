@@ -5,12 +5,15 @@ import { availableRooms } from '../db';
 import broadcast from '../utils/broadcast';
 
 const addUserToRoom = async (index: string, user: string, ws: ws) => {
-  if (availableRooms.has(index)) {
-    availableRooms.get(index)?.roomUsers.push({ name: user, index: 2 });
+  if (index === user) return;
 
-    if (availableRooms.get(index)?.roomUsers.length === 2) {
-      availableRooms.delete(index);
-    }
+  if (availableRooms.has(index) && availableRooms.get(index)!.roomUsers.length < 2) {
+    availableRooms.get(index)?.roomUsers.push({ name: user, index: 2 });
+  }
+
+  if (availableRooms.get(index)?.roomUsers.length === 2) {
+    availableRooms.delete(index);
+    // extra logic to create game
   }
 
   const updateRooms = {

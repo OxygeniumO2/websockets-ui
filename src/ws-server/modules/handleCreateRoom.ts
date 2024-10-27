@@ -7,6 +7,8 @@ import { messageStringify } from '../utils/messagesHelpers';
 import addUserToRoom from './addUserToRoom';
 
 const handleCreateRoom = async (user: string, ws: ws) => {
+  if (availableRooms.has(user)) return;
+
   availableRooms.set(user, {
     roomId: user,
     roomUsers: [
@@ -22,8 +24,6 @@ const handleCreateRoom = async (user: string, ws: ws) => {
     data: Array.from(availableRooms.values()),
     id: 0,
   };
-
-  // await addUserToRoom(roomId, ws);
 
   await broadcast(messageStringify(updateRooms));
 };
