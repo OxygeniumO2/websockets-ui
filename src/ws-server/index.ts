@@ -8,6 +8,7 @@ import updateRoom from './modules/updateRoom';
 import { availableRooms, loggedUsersMap } from './db';
 import addUserToRoom from './modules/addUserToRoom';
 import responseRooms from './utils/roomsHelper';
+import handleAddShips from './modules/handleAddShips';
 
 const port = 3000;
 
@@ -19,8 +20,6 @@ server.on('connection', (ws) => {
   ws.on('message', async (message) => {
     const msg = messageParser(message);
 
-    console.log(msg);
-
     switch (msg.type) {
       case MessageTypes.reg:
         await handleCreateUser(msg, ws);
@@ -31,10 +30,9 @@ server.on('connection', (ws) => {
         break;
       case MessageTypes.addUserToRoom:
         await addUserToRoom(currentUser, msg.data.indexRoom, ws);
-        console.log(msg);
         break;
       case MessageTypes.addShips:
-        console.log(msg);
+        await handleAddShips(msg);
         break;
       case MessageTypes.attack:
         console.log(msg);
@@ -55,8 +53,6 @@ server.on('connection', (ws) => {
     const responseRoomsMsg = responseRooms();
 
     broadcast(responseRoomsMsg);
-
-    console.log(`User ${currentUser} disconnected from logged-in users.`);
   });
 
   console.log('New connection was created');

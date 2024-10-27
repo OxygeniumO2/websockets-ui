@@ -1,11 +1,9 @@
 import ws from 'ws';
 import { RequestReg, ResponseReg } from '../utils/interfaces';
-import { availableRooms, loggedUsersMap } from '../db';
+import { loggedUsersMap } from '../db';
 import { MessageTypes } from '../utils/types';
 import { messageStringify } from '../utils/messagesHelpers';
 import updateRoom from './updateRoom';
-import responseRooms from '../utils/roomsHelper';
-import broadcast from '../utils/broadcast';
 
 const createResponseReg = (name: string, error: boolean, errorText: string = ''): ResponseReg => {
   return {
