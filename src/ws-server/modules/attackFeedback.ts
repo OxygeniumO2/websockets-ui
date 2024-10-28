@@ -3,7 +3,7 @@ import { GameDB, Position } from '../utils/interfaces';
 import { MessageTypes, Statuses } from '../utils/types';
 import { messageStringify } from '../utils/messagesHelpers';
 import sendTurn from './sendTurn';
-import handleWinner from './sendWinner';
+import handleWinner from './handleWinner';
 
 const generateAttackResponse = (isHit: Statuses, x: number, y: number, currentPlayer: string) => {
   return messageStringify({

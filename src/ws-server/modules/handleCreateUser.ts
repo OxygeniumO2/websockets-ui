@@ -4,6 +4,7 @@ import { loggedUsersMap } from '../db';
 import { MessageTypes } from '../utils/types';
 import { messageStringify } from '../utils/messagesHelpers';
 import updateRoom from './updateRoom';
+import winnersResponseHelper from '../utils/winnersResponseHelper';
 
 const createResponseReg = (name: string, error: boolean, errorText: string = ''): ResponseReg => {
   return {
@@ -52,6 +53,10 @@ const handleCreateUser = async (msg: RequestReg, ws: ws) => {
   console.log(`User ${msg.data.name} logged in and added to in memory database.`);
 
   await updateRoom(ws);
+
+  const winners = winnersResponseHelper();
+
+  ws.send(winners);
 
   ws.on('close', () => {
     loggedUsersMap.set(msg.data.name, { password: msg.data.password, ws, logged: false });

@@ -7,4 +7,6 @@ const availableRooms = new Map<string, Room>();
 
 const currentGames = new Map<string, GameDB>();
 
-export { loggedUsersMap, availableRooms, currentGames };
+const winners: Record<string, number> = {};
+
+export { loggedUsersMap, availableRooms, currentGames, winners };
