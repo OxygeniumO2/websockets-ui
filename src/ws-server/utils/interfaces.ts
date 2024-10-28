@@ -90,6 +90,7 @@ export interface Position {
 export interface ShipDB {
   positions: Position[];
   health: number;
+  totalShips: number;
 }
 
 export interface Attack {

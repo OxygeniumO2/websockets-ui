@@ -1,5 +1,5 @@
 import { currentGames } from '../db';
-import { Attack, Position, ShipDB } from '../utils/interfaces';
+import { Attack, GameDB, Position, ShipDB } from '../utils/interfaces';
 import { Ship } from '../utils/interfaces';
 import ws from 'ws';
 import attackFeedback from './attackFeedback';
@@ -53,9 +53,19 @@ const handleAttack = async (request: Attack, ws: ws) => {
     shipsPosition = currentGames.get(gameId)!.shipsPositionPlayer2;
   }
 
-  const { status, missAround, shipPositions } = handleAttackOnShip(shipsPosition, x, y);
+  const { status, missAround, shipPositions, leftShips } = handleAttackOnShip(shipsPosition, x, y);
 
-  await attackFeedback(status, indexPlayer, playerToHit, x, y, gameId, shipPositions, missAround);
+  await attackFeedback(
+    status,
+    indexPlayer,
+    playerToHit,
+    x,
+    y,
+    gameId,
+    shipPositions,
+    missAround,
+    leftShips
+  );
 };
 
 export default handleAttack;

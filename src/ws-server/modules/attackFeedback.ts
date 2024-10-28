@@ -1,8 +1,9 @@
-import { loggedUsersMap } from '../db';
-import { Position } from '../utils/interfaces';
+import { currentGames, loggedUsersMap } from '../db';
+import { GameDB, Position } from '../utils/interfaces';
 import { MessageTypes, Statuses } from '../utils/types';
 import { messageStringify } from '../utils/messagesHelpers';
 import sendTurn from './sendTurn';
+import handleWinner from './sendWinner';
 
 const generateAttackResponse = (isHit: Statuses, x: number, y: number, currentPlayer: string) => {
   return messageStringify({
@@ -27,8 +28,14 @@ const attackFeedback = async (
   y: number,
   gameId: string,
   shipPositions: Position[] | undefined,
-  missAround: Position[] | undefined
+  missAround: Position[] | undefined,
+  leftShips: number | undefined
 ) => {
+  if (isHit === Statuses.killed && leftShips === 0) {
+    await handleWinner(currentPlayer, playerToHit);
+    return;
+  }
+
   const responseAttack = generateAttackResponse(isHit, x, y, currentPlayer);
 
   if (isHit === Statuses.killed) {

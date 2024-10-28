@@ -39,11 +39,16 @@ const handleAttackOnShip = (shipsPosition: ShipDB[], x: number, y: number) => {
 
       const status = ship.health === 0 ? Statuses.killed : Statuses.shot;
 
+      if (status === Statuses.killed) {
+        shipsPosition[0].totalShips -= 1;
+      }
+
       return {
         status,
         ...(status === Statuses.killed && {
           missAround: generateMissAround(ship.positions),
           shipPositions: ship.positions,
+          leftShips: shipsPosition[0].totalShips,
         }),
       };
     } else if (hitPosition && hitPosition.isHit) {
