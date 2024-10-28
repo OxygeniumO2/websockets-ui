@@ -15,6 +15,8 @@ const sendTurn = async (movePlayer: string, afkPlayer: string, gameId: string) =
 
   loggedUsersMap.get(afkPlayer)?.ws.send(messageStringify(currentTurn));
   loggedUsersMap.get(movePlayer)?.ws.send(messageStringify(currentTurn));
+
+  console.log(`User ${movePlayer} is now turn`);
 };
 
 export default sendTurn;
