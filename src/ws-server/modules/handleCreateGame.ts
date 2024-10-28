@@ -2,6 +2,7 @@ import { currentGames, loggedUsersMap } from '../db';
 import { MessageTypes } from '../utils/types';
 import { messageStringify } from '../utils/messagesHelpers';
 import { CreateGame } from '../utils/interfaces';
+import createGameBoardCells from '../utils/createGameBoardCells';
 
 const createResponseCreateGame = (currentUser: string, userWhoCreatedRoom: string): CreateGame => {
   return {
@@ -25,6 +26,10 @@ const handleCreateGame = async (currentUser: string, userWhoCreatedRoom: string)
     indexPlayerWhoCreated: userWhoCreatedRoom,
     indexPlayer2: currentUser,
     indexPlayerTurn: userWhoCreatedRoom,
+    shipsPositionPlayerWhoCreated: [],
+    shipsPositionPlayer2: [],
+    cellsPlayerWhoCreated: createGameBoardCells(),
+    cellsPlayer2: createGameBoardCells(),
   });
 
   loggedUsersMap.get(userWhoCreatedRoom)?.ws.send(messageStringify(user1Game));

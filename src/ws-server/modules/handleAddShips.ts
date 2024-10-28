@@ -2,6 +2,7 @@ import { currentGames, loggedUsersMap } from '../db';
 import { AddShips } from '../utils/interfaces';
 import startGame from './startGame';
 import sendTurn from './sendTurn';
+import createShipPositions from '../utils/createShipPositions';
 
 const handleAddShips = async (request: AddShips) => {
   const { gameId, ships, indexPlayer } = request.data;
@@ -10,8 +11,14 @@ const handleAddShips = async (request: AddShips) => {
 
   if (indexPlayer === currentGames.get(gameId)?.indexPlayerWhoCreated) {
     currentGames.get(gameId)?.shipsPlayerWhoCreated?.push(...ships);
+    ships.forEach((ship) => {
+      currentGames.get(gameId)?.shipsPositionPlayerWhoCreated?.push(createShipPositions(ship));
+    });
   } else {
     currentGames.get(gameId)?.shipsPlayer2?.push(...ships);
+    ships.forEach((ship) => {
+      currentGames.get(gameId)?.shipsPositionPlayer2?.push(createShipPositions(ship));
+    });
   }
 
   if (

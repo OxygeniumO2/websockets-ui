@@ -75,6 +75,21 @@ export interface GameDB {
   indexPlayerWhoCreated: string;
   indexPlayer2: string;
   indexPlayerTurn: string;
+  shipsPositionPlayerWhoCreated: ShipDB[];
+  shipsPositionPlayer2: ShipDB[];
+  cellsPlayerWhoCreated: Position[];
+  cellsPlayer2: Position[];
+}
+
+export interface Position {
+  x: number;
+  y: number;
+  isHit: boolean;
+}
+
+export interface ShipDB {
+  positions: Position[];
+  health: number;
 }
 
 export interface Attack {
