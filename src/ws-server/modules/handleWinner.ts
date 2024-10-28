@@ -18,9 +18,16 @@ const handleWinner = async (currentPlayer: string, playerToHit: string) => {
   loggedUsersMap.get(playerToHit)?.ws.send(messageStringify(data));
   loggedUsersMap.get(currentPlayer)?.ws.send(messageStringify(data));
 
+  loggedUsersMap.get(playerToHit)!.partner = '';
+  loggedUsersMap.get(currentPlayer)!.partner = '';
+
   const winnersData = winnersResponseHelper();
 
   await broadcast(winnersData);
+
+  console.log(
+    `Command: ${MessageTypes.finish} Response: User ${currentPlayer} wins. User ${playerToHit} loses`
+  );
 };
 
 export default handleWinner;

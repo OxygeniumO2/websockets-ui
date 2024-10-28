@@ -14,6 +14,8 @@ const port = 3000;
 
 const server = new ws.Server({ port });
 
+if (server) console.log(`Server has been started on port ${port}`);
+
 server.on('connection', (ws) => {
   let currentUser = '';
 
@@ -29,20 +31,29 @@ server.on('connection', (ws) => {
         break;
       case MessageTypes.createRoom:
         await handleCreateRoom(currentUser);
+        console.log(`Command: ${msg.type} Response: User ${currentUser} created a room`);
         break;
       case MessageTypes.addUserToRoom:
         await addUserToRoom(currentUser, msg.data.indexRoom);
+        console.log(
+          `Command: ${msg.type} Response: User ${currentUser} added to room ${msg.data.indexRoom}`
+        );
         break;
       case MessageTypes.addShips:
         await handleAddShips(msg);
+        console.log(
+          `Command: ${msg.type} Response: User ${currentUser} added ships to room ${msg.data.gameId}`
+        );
         break;
       case MessageTypes.attack:
         currentUser === currentGames.get(msg.data.gameId)?.indexPlayerTurn &&
           (await handleAttack(msg));
+        console.log(`Command: ${msg.type} Response: User ${currentUser} attack`);
         break;
       case MessageTypes.randomAttack:
         currentUser === currentGames.get(msg.data.gameId)?.indexPlayerTurn &&
           (await handleAttack(msg, true));
+        console.log(`Command: ${msg.type} Response: User ${currentUser} random attack`);
         break;
       default:
         console.log('Unknown message type');
@@ -51,6 +62,8 @@ server.on('connection', (ws) => {
 
   ws.on('close', () => {
     activeSockets.delete(ws);
+
+    console.log('Connection was closed');
 
     if (!availableRooms.has(currentUser)) return;
 

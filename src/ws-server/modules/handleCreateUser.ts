@@ -27,6 +27,7 @@ const handleCreateUser = async (msg: RequestReg, ws: ws) => {
       true,
       `User ${msg.data.name} is already logged in.`
     );
+    console.log(`Command: ${msg.type} Response: User ${msg.data.name} is already logged in.`);
     ws.send(messageStringify(errorResponse));
     return;
   }
@@ -42,6 +43,7 @@ const handleCreateUser = async (msg: RequestReg, ws: ws) => {
       `Incorrect password for user ${msg.data.name}.`
     );
     ws.send(messageStringify(errorResponse));
+    console.log(`Command: ${msg.type} Response: Incorrect password for user ${msg.data.name}.`);
     return;
   }
 
@@ -56,7 +58,9 @@ const handleCreateUser = async (msg: RequestReg, ws: ws) => {
 
   ws.send(messageStringify(successResponse));
 
-  console.log(`User ${msg.data.name} logged in and added to in memory database.`);
+  console.log(
+    `Command: ${msg.type} Response: User ${msg.data.name} logged in and added to in memory database.`
+  );
 
   await updateRoom(ws);
 
