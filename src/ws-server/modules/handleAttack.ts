@@ -22,10 +22,11 @@ const handleAttack = async (request: Attack, randomAttack: boolean = false) => {
     playerToHit = currentGames.get(gameId)!.indexPlayerWhoCreated;
 
     if (randomAttack) {
-      const cells = currentGames.get(gameId)!.cellsPlayer2;
-      const availableCell = cells.find((cell) => !cell.isHit);
-      x = availableCell!.x;
-      y = availableCell!.y;
+      const availableCells = currentGames.get(gameId)!.cellsPlayer2.filter((cell) => !cell.isHit);
+      const randomIndex = Math.floor(Math.random() * availableCells.length);
+      const selectedCell = availableCells[randomIndex];
+      x = selectedCell!.x;
+      y = selectedCell!.y;
     }
 
     isHitCell = currentGames
@@ -48,10 +49,13 @@ const handleAttack = async (request: Attack, randomAttack: boolean = false) => {
     playerToHit = currentGames.get(gameId)!.indexPlayer2;
 
     if (randomAttack) {
-      const cells = currentGames.get(gameId)!.cellsPlayerWhoCreated;
-      const availableCell = cells.find((cell) => !cell.isHit);
-      x = availableCell!.x;
-      y = availableCell!.y;
+      const availableCells = currentGames
+        .get(gameId)!
+        .cellsPlayerWhoCreated.filter((cell) => !cell.isHit);
+      const randomIndex = Math.floor(Math.random() * availableCells.length);
+      const selectedCell = availableCells[randomIndex];
+      x = selectedCell!.x;
+      y = selectedCell!.y;
     }
 
     isHitCell = currentGames
