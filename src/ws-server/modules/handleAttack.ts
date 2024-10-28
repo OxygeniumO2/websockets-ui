@@ -11,8 +11,8 @@ const markCellsAsHit = (cells: Position[], targets: Position[]) => {
   });
 };
 
-const handleAttack = async (request: Attack) => {
-  const { gameId, x, y, indexPlayer } = request.data;
+const handleAttack = async (request: Attack, randomAttack: boolean = false) => {
+  let { gameId, x, y, indexPlayer } = request.data;
 
   let playerToHit: string;
   let shipsPosition: ShipDB[] = [];
@@ -20,6 +20,13 @@ const handleAttack = async (request: Attack) => {
 
   if (indexPlayer !== currentGames.get(gameId)?.indexPlayerWhoCreated) {
     playerToHit = currentGames.get(gameId)!.indexPlayerWhoCreated;
+
+    if (randomAttack) {
+      const cells = currentGames.get(gameId)!.cellsPlayer2;
+      const availableCell = cells.find((cell) => !cell.isHit);
+      x = availableCell!.x;
+      y = availableCell!.y;
+    }
 
     isHitCell = currentGames
       .get(gameId)!
@@ -39,6 +46,13 @@ const handleAttack = async (request: Attack) => {
     shipsPosition = currentGames.get(gameId)!.shipsPositionPlayerWhoCreated;
   } else {
     playerToHit = currentGames.get(gameId)!.indexPlayer2;
+
+    if (randomAttack) {
+      const cells = currentGames.get(gameId)!.cellsPlayerWhoCreated;
+      const availableCell = cells.find((cell) => !cell.isHit);
+      x = availableCell!.x;
+      y = availableCell!.y;
+    }
 
     isHitCell = currentGames
       .get(gameId)!

@@ -41,7 +41,8 @@ server.on('connection', (ws) => {
           (await handleAttack(msg));
         break;
       case MessageTypes.randomAttack:
-        console.log(msg);
+        currentUser === currentGames.get(msg.data.gameId)?.indexPlayerTurn &&
+          (await handleAttack(msg, true));
         break;
       default:
         console.log('Unknown message type');
