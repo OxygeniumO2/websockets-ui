@@ -34,6 +34,9 @@ const handleCreateGame = async (currentUser: string, userWhoCreatedRoom: string)
 
   loggedUsersMap.get(userWhoCreatedRoom)?.ws.send(messageStringify(user1Game));
   loggedUsersMap.get(currentUser)?.ws.send(messageStringify(user2Game));
+
+  loggedUsersMap.get(userWhoCreatedRoom)!.partner = currentUser;
+  loggedUsersMap.get(currentUser)!.partner = userWhoCreatedRoom;
 };
 
 export default handleCreateGame;

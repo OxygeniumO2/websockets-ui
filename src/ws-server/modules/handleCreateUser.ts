@@ -1,10 +1,11 @@
 import ws from 'ws';
 import { RequestReg, ResponseReg } from '../utils/interfaces';
-import { loggedUsersMap } from '../db';
+import { loggedUsersMap, winners } from '../db';
 import { MessageTypes } from '../utils/types';
 import { messageStringify } from '../utils/messagesHelpers';
 import updateRoom from './updateRoom';
 import winnersResponseHelper from '../utils/winnersResponseHelper';
+import broadcast from '../utils/broadcast';
 
 const createResponseReg = (name: string, error: boolean, errorText: string = ''): ResponseReg => {
   return {
@@ -44,7 +45,12 @@ const handleCreateUser = async (msg: RequestReg, ws: ws) => {
     return;
   }
 
-  loggedUsersMap.set(msg.data.name, { password: msg.data.password, ws, logged: true });
+  loggedUsersMap.set(msg.data.name, {
+    password: msg.data.password,
+    ws,
+    logged: true,
+    partner: '',
+  });
 
   const successResponse = createResponseReg(msg.data.name, false);
 
@@ -54,12 +60,37 @@ const handleCreateUser = async (msg: RequestReg, ws: ws) => {
 
   await updateRoom(ws);
 
-  const winners = winnersResponseHelper();
+  const winnersResp = winnersResponseHelper();
 
-  ws.send(winners);
+  ws.send(winnersResp);
 
   ws.on('close', () => {
-    loggedUsersMap.set(msg.data.name, { password: msg.data.password, ws, logged: false });
+    if (loggedUsersMap.get(msg.data.name)?.partner) {
+      const partner = loggedUsersMap.get(msg.data.name)!.partner;
+
+      loggedUsersMap.get(partner)?.ws.send(
+        messageStringify({
+          type: MessageTypes.finish,
+          data: {
+            winPlayer: partner,
+          },
+          id: 0,
+        })
+      );
+
+      loggedUsersMap.get(partner)!.partner = '';
+
+      winners[partner] = winners[partner] ? winners[partner] + 1 : 1;
+
+      broadcast(winnersResponseHelper());
+    }
+
+    loggedUsersMap.set(msg.data.name, {
+      password: msg.data.password,
+      ws,
+      logged: false,
+      partner: '',
+    });
 
     console.log(`User ${msg.data.name} disconnected from logged-in users.`);
   });

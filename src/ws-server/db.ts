@@ -1,7 +1,10 @@
 import ws from 'ws';
 import { GameDB, Room } from './utils/interfaces';
 
-const loggedUsersMap = new Map<string, { password: string; ws: ws; logged: boolean }>();
+const loggedUsersMap = new Map<
+  string,
+  { password: string; ws: ws; logged: boolean; partner: string }
+>();
 
 const availableRooms = new Map<string, Room>();
 
