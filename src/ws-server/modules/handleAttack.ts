@@ -1,7 +1,5 @@
 import { currentGames } from '../db';
-import { Attack, GameDB, Position, ShipDB } from '../utils/interfaces';
-import { Ship } from '../utils/interfaces';
-import ws from 'ws';
+import { Attack, Position, ShipDB } from '../utils/interfaces';
 import attackFeedback from './attackFeedback';
 import sendTurn from './sendTurn';
 import handleAttackOnShip from '../utils/handleAttackOnShip';
@@ -13,7 +11,7 @@ const markCellsAsHit = (cells: Position[], targets: Position[]) => {
   });
 };
 
-const handleAttack = async (request: Attack, ws: ws) => {
+const handleAttack = async (request: Attack) => {
   const { gameId, x, y, indexPlayer } = request.data;
 
   let playerToHit: string;

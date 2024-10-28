@@ -1,12 +1,9 @@
-import { MessageTypes } from '../utils/types';
-import ws from 'ws';
-import { messageStringify } from '../utils/messagesHelpers';
 import { availableRooms } from '../db';
 import broadcast from '../utils/broadcast';
 import responseRooms from '../utils/roomsHelper';
 import handleCreateGame from './handleCreateGame';
 
-const addUserToRoom = async (currentUser: string, userWhoCreatedRoom: string, ws: ws) => {
+const addUserToRoom = async (currentUser: string, userWhoCreatedRoom: string) => {
   if (currentUser === userWhoCreatedRoom) return;
 
   if (

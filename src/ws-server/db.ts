@@ -9,4 +9,6 @@ const currentGames = new Map<string, GameDB>();
 
 const winners: Record<string, number> = {};
 
-export { loggedUsersMap, availableRooms, currentGames, winners };
+const activeSockets: Set<ws> = new Set();
+
+export { loggedUsersMap, availableRooms, currentGames, winners, activeSockets };

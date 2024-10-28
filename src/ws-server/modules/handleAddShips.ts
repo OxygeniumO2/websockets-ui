@@ -1,4 +1,4 @@
-import { currentGames, loggedUsersMap } from '../db';
+import { currentGames } from '../db';
 import { AddShips } from '../utils/interfaces';
 import startGame from './startGame';
 import sendTurn from './sendTurn';

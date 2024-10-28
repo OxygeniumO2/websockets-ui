@@ -1,9 +1,8 @@
 import { availableRooms } from '../db';
-import ws from 'ws';
 import broadcast from '../utils/broadcast';
 import responseRooms from '../utils/roomsHelper';
 
-const handleCreateRoom = async (user: string, ws: ws) => {
+const handleCreateRoom = async (user: string) => {
   if (availableRooms.has(user)) return;
 
   availableRooms.set(user, {

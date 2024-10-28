@@ -1,5 +1,5 @@
-import { currentGames, loggedUsersMap } from '../db';
-import { GameDB, Position } from '../utils/interfaces';
+import { loggedUsersMap } from '../db';
+import { Position } from '../utils/interfaces';
 import { MessageTypes, Statuses } from '../utils/types';
 import { messageStringify } from '../utils/messagesHelpers';
 import sendTurn from './sendTurn';
