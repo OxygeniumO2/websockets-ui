@@ -13,7 +13,7 @@ const createShipPositions = (ship: Ship): ShipDB => {
   return {
     positions,
     health: ship.length,
-    totalShips: 9,
+    totalShips: 10,
   };
 };
 

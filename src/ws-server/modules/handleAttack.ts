@@ -6,6 +6,13 @@ import attackFeedback from './attackFeedback';
 import sendTurn from './sendTurn';
 import handleAttackOnShip from '../utils/handleAttackOnShip';
 
+const markCellsAsHit = (cells: Position[], targets: Position[]) => {
+  targets.forEach((target) => {
+    const cell = cells.find((cell) => cell.x === target.x && cell.y === target.y);
+    if (cell) cell.isHit = true;
+  });
+};
+
 const handleAttack = async (request: Attack, ws: ws) => {
   const { gameId, x, y, indexPlayer } = request.data;
 
@@ -54,6 +61,16 @@ const handleAttack = async (request: Attack, ws: ws) => {
   }
 
   const { status, missAround, shipPositions, leftShips } = handleAttackOnShip(shipsPosition, x, y);
+
+  if (missAround && indexPlayer !== currentGames.get(gameId)?.indexPlayerWhoCreated) {
+    const cells = currentGames.get(gameId)!.cellsPlayer2;
+
+    markCellsAsHit(cells, missAround);
+  } else if (missAround && indexPlayer === currentGames.get(gameId)?.indexPlayerWhoCreated) {
+    const cells = currentGames.get(gameId)!.cellsPlayerWhoCreated;
+
+    markCellsAsHit(cells, missAround);
+  }
 
   await attackFeedback(
     status,
