@@ -4,16 +4,14 @@
   "description": "Template for the WebSocket remote control task",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only src/ws-server/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon ./index.ts"
+    "start": "ts-node-dev --respawn --transpile-only ./index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andrei Auchynnikau",
   "keywords": [],
   "license": "ISC",
   "devDependencies": {
     "@types/ws": "^8.5.12",
-    "nodemon": "^3.1.7",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.3"
   },
