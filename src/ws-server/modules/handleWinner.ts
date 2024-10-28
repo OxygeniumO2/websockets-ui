@@ -3,6 +3,7 @@ import { MessageTypes } from '../utils/types';
 import { messageStringify } from '../utils/messagesHelpers';
 import broadcast from '../utils/broadcast';
 import winnersResponseHelper from '../utils/winnersResponseHelper';
+import updateRoom from './updateRoom';
 
 const handleWinner = async (currentPlayer: string, playerToHit: string) => {
   const data = {
@@ -22,6 +23,9 @@ const handleWinner = async (currentPlayer: string, playerToHit: string) => {
   loggedUsersMap.get(currentPlayer)!.partner = '';
 
   const winnersData = winnersResponseHelper();
+
+  await updateRoom(loggedUsersMap.get(currentPlayer)!.ws);
+  await updateRoom(loggedUsersMap.get(playerToHit)!.ws);
 
   await broadcast(winnersData);
 

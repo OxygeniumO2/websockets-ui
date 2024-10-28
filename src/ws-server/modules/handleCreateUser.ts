@@ -68,7 +68,7 @@ const handleCreateUser = async (msg: RequestReg, ws: ws) => {
 
   ws.send(winnersResp);
 
-  ws.on('close', () => {
+  ws.on('close', async () => {
     if (loggedUsersMap.get(msg.data.name)?.partner) {
       const partner = loggedUsersMap.get(msg.data.name)!.partner;
 
@@ -85,6 +85,8 @@ const handleCreateUser = async (msg: RequestReg, ws: ws) => {
       loggedUsersMap.get(partner)!.partner = '';
 
       winners[partner] = winners[partner] ? winners[partner] + 1 : 1;
+
+      await updateRoom(loggedUsersMap.get(partner)!.ws);
 
       broadcast(winnersResponseHelper());
     }
