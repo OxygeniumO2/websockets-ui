@@ -52,10 +52,10 @@ const attackFeedback = async (
       loggedUsersMap.get(playerToHit)?.ws.send(responseAttack);
       loggedUsersMap.get(currentPlayer)?.ws.send(responseAttack);
     });
+  } else {
+    loggedUsersMap.get(playerToHit)?.ws.send(responseAttack);
+    loggedUsersMap.get(currentPlayer)?.ws.send(responseAttack);
   }
-
-  loggedUsersMap.get(playerToHit)?.ws.send(responseAttack);
-  loggedUsersMap.get(currentPlayer)?.ws.send(responseAttack);
 
   if (isHit === Statuses.miss) {
     await sendTurn(playerToHit, currentPlayer, gameId);
