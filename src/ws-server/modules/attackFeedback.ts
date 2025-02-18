@@ -20,7 +20,7 @@ const generateAttackResponse = (isHit: Statuses, x: number, y: number, currentPl
   });
 };
 
-const attackFeedback = async (
+const attackFeedback = (
   isHit: Statuses,
   currentPlayer: string,
   playerToHit: string,
@@ -31,11 +31,6 @@ const attackFeedback = async (
   missAround: Position[] | undefined,
   leftShips: number | undefined
 ) => {
-  if (isHit === Statuses.killed && leftShips === 0) {
-    await handleWinner(currentPlayer, playerToHit);
-    return;
-  }
-
   const responseAttack = generateAttackResponse(isHit, x, y, currentPlayer);
 
   if (isHit === Statuses.killed) {
@@ -57,10 +52,15 @@ const attackFeedback = async (
     loggedUsersMap.get(currentPlayer)?.ws.send(responseAttack);
   }
 
+  if (isHit === Statuses.killed && leftShips === 0) {
+    handleWinner(currentPlayer, playerToHit);
+    return;
+  }
+
   if (isHit === Statuses.miss) {
-    await sendTurn(playerToHit, currentPlayer, gameId);
+    sendTurn(playerToHit, currentPlayer, gameId);
   } else {
-    await sendTurn(currentPlayer, playerToHit, gameId);
+    sendTurn(currentPlayer, playerToHit, gameId);
   }
 };
 

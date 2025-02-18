@@ -2,7 +2,7 @@ import { availableRooms } from '../db';
 import broadcast from '../utils/broadcast';
 import responseRooms from '../utils/roomsHelper';
 
-const handleCreateRoom = async (user: string) => {
+const handleCreateRoom = (user: string) => {
   if (availableRooms.has(user)) return;
 
   availableRooms.set(user, {
@@ -17,7 +17,7 @@ const handleCreateRoom = async (user: string) => {
 
   const response = responseRooms();
 
-  await broadcast(response);
+  broadcast(response);
 };
 
 export default handleCreateRoom;

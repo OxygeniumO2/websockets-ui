@@ -3,7 +3,7 @@ import { MessageTypes } from '../utils/types';
 import { messageStringify } from '../utils/messagesHelpers';
 import { availableRooms } from '../db';
 
-const updateRoom = async (ws: ws) => {
+const updateRoom = (ws: ws) => {
   const updateRooms = {
     type: MessageTypes.updateRoom,
     data: Array.from(availableRooms.values()),

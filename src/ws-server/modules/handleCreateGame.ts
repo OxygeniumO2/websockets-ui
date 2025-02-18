@@ -15,7 +15,7 @@ const createResponseCreateGame = (currentUser: string, userWhoCreatedRoom: strin
   };
 };
 
-const handleCreateGame = async (currentUser: string, userWhoCreatedRoom: string) => {
+const handleCreateGame = (currentUser: string, userWhoCreatedRoom: string) => {
   const user1Game = createResponseCreateGame(userWhoCreatedRoom, userWhoCreatedRoom);
   const user2Game = createResponseCreateGame(currentUser, userWhoCreatedRoom);
 

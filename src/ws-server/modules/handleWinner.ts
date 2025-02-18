@@ -5,7 +5,7 @@ import broadcast from '../utils/broadcast';
 import winnersResponseHelper from '../utils/winnersResponseHelper';
 import updateRoom from './updateRoom';
 
-const handleWinner = async (currentPlayer: string, playerToHit: string) => {
+const handleWinner = (currentPlayer: string, playerToHit: string) => {
   const data = {
     type: MessageTypes.finish,
     data: {
@@ -24,10 +24,10 @@ const handleWinner = async (currentPlayer: string, playerToHit: string) => {
 
   const winnersData = winnersResponseHelper();
 
-  await updateRoom(loggedUsersMap.get(currentPlayer)!.ws);
-  await updateRoom(loggedUsersMap.get(playerToHit)!.ws);
+  updateRoom(loggedUsersMap.get(currentPlayer)!.ws);
+  updateRoom(loggedUsersMap.get(playerToHit)!.ws);
 
-  await broadcast(winnersData);
+  broadcast(winnersData);
 
   console.log(
     `Command: ${MessageTypes.finish} Response: User ${currentPlayer} wins. User ${playerToHit} loses`

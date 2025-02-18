@@ -11,7 +11,7 @@ const markCellsAsHit = (cells: Position[], targets: Position[]) => {
   });
 };
 
-const handleAttack = async (request: Attack, randomAttack: boolean = false) => {
+const handleAttack = (request: Attack, randomAttack: boolean = false) => {
   let { gameId, x, y, indexPlayer } = request.data;
 
   let playerToHit: string;
@@ -34,7 +34,7 @@ const handleAttack = async (request: Attack, randomAttack: boolean = false) => {
       .cellsPlayer2.some((cell) => cell.x === x && cell.y === y && cell.isHit);
 
     if (isHitCell) {
-      await sendTurn(indexPlayer, playerToHit, gameId);
+      sendTurn(indexPlayer, playerToHit, gameId);
       return;
     }
 
@@ -63,7 +63,7 @@ const handleAttack = async (request: Attack, randomAttack: boolean = false) => {
       .cellsPlayerWhoCreated.some((cell) => cell.x === x && cell.y === y && cell.isHit);
 
     if (isHitCell) {
-      await sendTurn(indexPlayer, playerToHit, gameId);
+      sendTurn(indexPlayer, playerToHit, gameId);
       return;
     }
 
@@ -88,7 +88,7 @@ const handleAttack = async (request: Attack, randomAttack: boolean = false) => {
     markCellsAsHit(cells, missAround);
   }
 
-  await attackFeedback(
+  attackFeedback(
     status,
     indexPlayer,
     playerToHit,

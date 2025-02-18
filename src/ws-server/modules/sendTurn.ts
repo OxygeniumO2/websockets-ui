@@ -2,7 +2,7 @@ import { currentGames, loggedUsersMap } from '../db';
 import { MessageTypes } from '../utils/types';
 import { messageStringify } from '../utils/messagesHelpers';
 
-const sendTurn = async (movePlayer: string, afkPlayer: string, gameId: string) => {
+const sendTurn = (movePlayer: string, afkPlayer: string, gameId: string) => {
   const currentTurn = {
     type: MessageTypes.turn,
     data: {

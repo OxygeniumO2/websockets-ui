@@ -14,7 +14,7 @@ const createResponseCreateGame = (currentPlayerIndex: string, ships: Ship[]): St
   };
 };
 
-const startGame = async (playerWhoCreated: string, player2: string) => {
+const startGame = (playerWhoCreated: string, player2: string) => {
   const { shipsPlayerWhoCreated, shipsPlayer2 } = currentGames.get(playerWhoCreated)!;
 
   const respPlayer1 = createResponseCreateGame(playerWhoCreated, shipsPlayerWhoCreated);

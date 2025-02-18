@@ -27,38 +27,37 @@ server.on('connection', (ws) => {
 
   activeSockets.add(ws);
 
-  ws.on('message', async (message) => {
+  ws.on('message', (message) => {
     const msg = messageParser(message);
 
     switch (msg.type) {
       case MessageTypes.reg:
-        await handleCreateUser(msg, ws);
+        handleCreateUser(msg, ws);
         currentUser = msg?.data?.name || 'Guest';
         break;
       case MessageTypes.createRoom:
-        await handleCreateRoom(currentUser);
+        handleCreateRoom(currentUser);
         console.log(`Command: ${msg.type} Response: User ${currentUser} created a room`);
         break;
       case MessageTypes.addUserToRoom:
-        await addUserToRoom(currentUser, msg.data.indexRoom);
+        addUserToRoom(currentUser, msg.data.indexRoom);
         console.log(
           `Command: ${msg.type} Response: User ${currentUser} added to room ${msg.data.indexRoom}`
         );
         break;
       case MessageTypes.addShips:
-        await handleAddShips(msg);
+        handleAddShips(msg);
         console.log(
           `Command: ${msg.type} Response: User ${currentUser} added ships to room ${msg.data.gameId}`
         );
         break;
       case MessageTypes.attack:
-        currentUser === currentGames.get(msg.data.gameId)?.indexPlayerTurn &&
-          (await handleAttack(msg));
+        currentUser === currentGames.get(msg.data.gameId)?.indexPlayerTurn && handleAttack(msg);
         console.log(`Command: ${msg.type} Response: User ${currentUser} attack`);
         break;
       case MessageTypes.randomAttack:
         currentUser === currentGames.get(msg.data.gameId)?.indexPlayerTurn &&
-          (await handleAttack(msg, true));
+          handleAttack(msg, true);
         console.log(`Command: ${msg.type} Response: User ${currentUser} random attack`);
         break;
       default:

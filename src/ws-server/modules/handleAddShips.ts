@@ -4,7 +4,7 @@ import startGame from './startGame';
 import sendTurn from './sendTurn';
 import createShipPositions from '../utils/createShipPositions';
 
-const handleAddShips = async (request: AddShips) => {
+const handleAddShips = (request: AddShips) => {
   const { gameId, ships, indexPlayer } = request.data;
 
   if (!currentGames.has(gameId)) return;
@@ -28,9 +28,9 @@ const handleAddShips = async (request: AddShips) => {
     const playerWhoCreated = currentGames.get(gameId)!.indexPlayerWhoCreated;
     const player2 = currentGames.get(gameId)!.indexPlayer2;
 
-    await startGame(playerWhoCreated, player2);
+    startGame(playerWhoCreated, player2);
 
-    await sendTurn(playerWhoCreated, player2, gameId);
+    sendTurn(playerWhoCreated, player2, gameId);
   }
 };
 

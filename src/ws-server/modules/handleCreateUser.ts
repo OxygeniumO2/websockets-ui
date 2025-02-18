@@ -20,7 +20,7 @@ const createResponseReg = (name: string, error: boolean, errorText: string = '')
   };
 };
 
-const handleCreateUser = async (msg: RequestReg, ws: ws) => {
+const handleCreateUser = (msg: RequestReg, ws: ws) => {
   if (loggedUsersMap.has(msg.data.name) && loggedUsersMap.get(msg.data.name)?.logged) {
     const errorResponse = createResponseReg(
       msg.data.name,
@@ -62,13 +62,13 @@ const handleCreateUser = async (msg: RequestReg, ws: ws) => {
     `Command: ${msg.type} Response: User ${msg.data.name} logged in and added to in memory database.`
   );
 
-  await updateRoom(ws);
+  updateRoom(ws);
 
   const winnersResp = winnersResponseHelper();
 
   ws.send(winnersResp);
 
-  ws.on('close', async () => {
+  ws.on('close', () => {
     if (loggedUsersMap.get(msg.data.name)?.partner) {
       const partner = loggedUsersMap.get(msg.data.name)!.partner;
 
@@ -86,7 +86,7 @@ const handleCreateUser = async (msg: RequestReg, ws: ws) => {
 
       winners[partner] = winners[partner] ? winners[partner] + 1 : 1;
 
-      await updateRoom(loggedUsersMap.get(partner)!.ws);
+      updateRoom(loggedUsersMap.get(partner)!.ws);
 
       broadcast(winnersResponseHelper());
     }
